@@ -1,0 +1,16 @@
+.blog-post-title {
+    margin-bottom: 30px;
+}
+
+.blog-post-content {
+    text-align: left;
+    font-size: 20px;
+}
+
+.blog-post-content p {
+    margin-bottom: 30px;
+}
+
+.blog-post-content code {
+    color: darkslategrey;
+}

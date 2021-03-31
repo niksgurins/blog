@@ -1,0 +1,72 @@
+/* Fix header to top of page, reset list styling and hide dropdown by default */
+.header {
+    background-color: #fff;
+    box-shadow: 1px 1px 10px 0 rgba(0,0,0,.1);
+    position: sticky;
+    width: 100%;
+    top: 0px;
+}
+
+.header ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.header li a {
+    display: block;
+    padding: 20px 20px;
+    border-right: 1px solid #f4f4f4;
+    text-decoration: none;
+}
+
+.header li a:hover {
+    background-color: #f4f4f4;
+}
+
+.header .logo {
+    display: block;
+    float: left;
+    font-size: 2em;
+    padding: 10px 30px;
+    text-decoration: none;
+    border: none;
+    background-color: #fff;
+    color: darkslategrey;
+    user-select: none;
+}
+
+.header .menu {
+    clear: both;
+    max-height: 0; /* Hide menu initially */
+    transition: max-height .2s ease-out; /* Animate the menu stretching till max-height */
+}
+
+/* Style menu icon and dropdown */
+.header .burger-menu-icon {
+    display: inline-block;
+    float: right;
+    padding: 28px 30px 0px 0px;
+    position: relative;
+    user-select: none;
+    margin-top: -5px;
+}
+
+.burger-icon {
+    cursor: pointer;
+    color: darkslategrey;
+    border-radius: 5px;
+    display: block;
+    position: relative;
+}
+
+/* Icon and menu animatinos when checkbox clicked */
+.header .burger-menu-btn {
+    display: none;
+}
+
+.header .burger-menu-btn:checked ~ .menu {
+    max-height: 260px; /* 65px per item */
+}
