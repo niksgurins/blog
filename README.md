@@ -16,4 +16,4 @@ Before attempting to run the application, make sure you have [Node](https://node
 2. Using a CLI(Command Line Interface), cd(change directory) to Program Files/MongoDB/Server/<ver. no.>/bin and type the command "mongo". Hit Enter.
 3. With another CLI, cd to wherever you saved the repository contents and go into the back-end folder. From there, write "node index.js" and hit Enter.
 4. After opening one last CLI, cd to the front-end folder of the repo and run the command "npm start".
-5. The application should have launched and will be available at [localhost:3000/](localhost:3000/)
+5. The application should have launched and will be available at [localhost:3000/](http://localhost:3000/)
