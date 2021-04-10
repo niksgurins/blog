@@ -9,23 +9,14 @@ const port = 9000;
 // DB imports
 const client = require('./db/mongoUtil');
 const userDB = require("./db/userDB")(client);
-const tokenDB = require("./db/tokenDB")(client);
 
 // OAuth imports
-const oAuthService = require("./auth/tokenService")(userDB, tokenDB);
-const oAuth2Server = require("oauth2-server");
-
 const authenticator = require("./auth/authenticator")(userDB);
-
-app.oauth = new oAuth2Server({
-    model: oAuthService,
-    grants: ["password"],
-    debug: true,
-});
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(app.oauth.errorHandler());
 
 const test = async () => {
     console.log('Connecting to MongoDB...');
@@ -37,10 +28,10 @@ const test = async () => {
         console.log('Connection established and query test successful: ');
         console.log(result);
     })
-
-    console.log(crypto.createHash("sha256").update("shalle").digest("hex"));
 }
 test();
+
+app.use('/oauth', require('./routes/auth.js'))
 
 app.get('/posts', async function (req, res) {
     // Get all(?) blog posts
