@@ -1,0 +1,8 @@
+.archive {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 18rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}

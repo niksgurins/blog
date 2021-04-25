@@ -1,17 +1,46 @@
-.App {
+.app {
     text-align: center;
 }
 
-.App-link {
-    color: #61dafb;
-}
-
-.App .content {
-    display: flex;
+.content {
+    display: block;
     align-items: center;
     justify-content: center;
+    font-size: 2.1rem;
+    width: 75rem;
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
-    padding-top: 30px;
+    padding-top: 3rem;
+    line-height: 3.4rem;
+}
+
+.content h1 {
+    font-size: 2em;
+}
+
+/* Media queries */
+@media screen and (max-width: 808px) {
+    .content {
+        width: 65rem;
+        font-size: 1.8em;
+    }
+}
+
+@media screen and (max-width: 708px) {
+    .content {
+        width: 55rem;
+        font-size: 1.8em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .content {
+        width: 45rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .content {
+        width: 30rem;
+    }
 }

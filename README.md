@@ -6,6 +6,7 @@ A SP web app, written with best practices in mind, with a RESTful backend.
 * Node
 * Express
 * MongoDB
+* Redux, React-Redux and Redux Toolkit
 * Bootstrap Icons
 
 #### Requirements

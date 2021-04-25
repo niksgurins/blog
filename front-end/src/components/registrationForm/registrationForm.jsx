@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import BLANKUSER from '../../constants/blankUser';
+import '../../common/form.css';
 
 const RegistrationForm = () => {
     const [userDetails, setUserDetails] = useState({...BLANKUSER});
@@ -21,7 +22,7 @@ const RegistrationForm = () => {
         setRegisterStatusColor(!matching);
     }
 
-    const getRegisterRequest = () => {
+    const getHttpRequest = () => {
         let requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -34,7 +35,7 @@ const RegistrationForm = () => {
     }
 
     const handleRegister = () => {
-        fetch("http://localhost:9000/users", getRegisterRequest())
+        fetch("http://localhost:9000/users", getHttpRequest())
             .then(res => res.status === 200 ? registrationSuccess() : res.json())
             .then(res => res !== undefined ? registrationFailure(res.message) : null)
             .catch(err => registrationFailure(err));

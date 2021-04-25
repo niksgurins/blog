@@ -1,16 +1,20 @@
-.blog-post-title {
-    margin-bottom: 30px;
+.blog-post-title {   
+    margin-bottom: 3rem;
 }
 
 .blog-post-content {
     text-align: left;
-    font-size: 20px;
 }
 
 .blog-post-content p {
     margin-bottom: 30px;
 }
-
 .blog-post-content code {
-    color: darkslategrey;
+    color: darkslategrey
+}
+
+@media screen and (max-width: 512px) { /* prevent form width exceeding .content + margins */
+    .blog-post {
+        width: 45rem;
+    }
 }

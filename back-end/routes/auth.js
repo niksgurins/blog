@@ -3,15 +3,16 @@ const client = require('../db/mongoUtil')
 const oauthServer = require('../auth/server.js')
 const router = express.Router()
 const fetch = require("node-fetch");
-
+const { ObjectID } = require('bson');
 
 router.get('/', (req,res) => {  // This is only hit if the user/password cannot be matched to a document in the DB
-    res.send("Incorrect login credentials");
+    res.status(401).json({'message': 'Incorrect login credentials'});
 })
 
 router.post('/authorize', async (req, res, next) => {
-    const {username, password} = req.body
-    const query = {username: username, password: password}
+    const base64EncodedCredentials = Buffer.from(req.headers.authorization, 'base64').toString().split(':');
+    const credentials = {'username': base64EncodedCredentials[0], 'password': base64EncodedCredentials[1]}; 
+    const query = {username: credentials.username, password: credentials.password}
     let result;
 
     await client.db('blogDB').collection('users').findOne(query)
@@ -59,6 +60,11 @@ router.get('/exchange', async (req, res) => {
         
         if (codeInDB !== undefined && codeInDB !== null) {
             let clientSecret = null;
+            let user;
+            await client.db('blogDB').collection('users').findOne({_id: ObjectID(codeInDB.user_id)})
+                .then(data => user = data)
+                .catch(err => user = err)
+
             fetch('http://localhost:9000/oauth/token', {
                 method: 'POST',
                 body: `grant_type=authorization_code&code=${req.query.code}&client_id=${codeInDB.client_id}&client_secret=${clientSecret}&redirect_uri=${codeInDB.redirect_uri}`, // this is how we send that data up
@@ -68,20 +74,34 @@ router.get('/exchange', async (req, res) => {
             })
             .then(token => token.json())
             .then(token => {
+                console.log(token);
                 let response = {
-                    access_token: token.access_token,
-                    token_type: token.token_type,
-                    expires_in: token.expires_in,
+                    userId: user._id,
+                    firstName: user.firstName, 
+                    expires_in: token.expires_in
                     // refresh_token: token.refresh_token,
                     // scope: token.scope
                 }
 
+                let optionsHttpOnly = {
+                    maxAge: token.expires_in,
+                    httpOnly: true, 
+                }
+
+                // Set cookie
+                res.cookie('access_token', token.access_token, optionsHttpOnly)
+                res.cookie('token_type', token.token_type, {maxAge: token.expires_in})
+                res.cookie('user_id', token.userId, {maxAge: token.expires_in})
+
                 res.set({
+                    //'Access-Control-Allow-Origin': 'http://localhost:3000',
+                    //'Access-Control-Allow-Credentials': 'true',
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-store',
-                    'Pragma': 'no-cache'
+                    'Pragma': 'no-cache',
                 })
-                res.status(200).json({...response});
+
+                res.status(200).json(response);
             })
             .catch(err => console.log(err));
         } else {

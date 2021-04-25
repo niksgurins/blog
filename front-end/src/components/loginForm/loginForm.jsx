@@ -1,7 +1,13 @@
-import {useState} from 'react';
-const crypto = require('crypto');
+import {useState} from 'react'
+import '../../common/form.css'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '../../reduxSlices/userSlice'
 
-const Login = () => {
+const Login = (props) => {
+    const user = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+
+    const crypto = require('crypto');
     const [loginDetails, setLoginDetails] = useState({
         username: "",
         password: ""
@@ -11,32 +17,44 @@ const Login = () => {
         setLoginDetails({...loginDetails, [loginField]: e.currentTarget.value});
     }
 
-    const getRequestOptions = () => {
+    const getHttpRequest = () => {
         let requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `${btoa(`${loginDetails.username}:${crypto.createHash("sha256").update(loginDetails.password).digest("hex")}`)}`
+            },
+            credentials: 'include',
             body: JSON.stringify({
-                client_id: "84fc8ce1ab11eae5d4296eaf2fc86ed9",
-                //redirect_uri: "http://localhost:3000/",
+                client_id: "84fc8ce1ab11eae5d4296eaf2fc86ed9", // Need to figure out where to keep this
                 response_type: "code",
                 grant_type: "authorization_code",
-                username: loginDetails.username,
-                password: crypto.createHash("sha256").update(loginDetails.password).digest("hex")
             })
         };
         
         return requestOptions;
     }
 
+    const saveBasicUserInfoToLocalStorage = (user) => {
+        Object.keys(user).forEach(key => {
+            localStorage.setItem(key, user[key]);
+        })
+    }
+
     const handleLogin = () => {
-        fetch('http://localhost:9000/oauth/authorize', getRequestOptions())
-            .then(res => res.text())
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+        fetch('http://localhost:9000/oauth/authorize', getHttpRequest())
+            .then(res => res.json())
+            .then(res => {
+                saveBasicUserInfoToLocalStorage(res);
+                props.setSignedIn(true);
+                dispatch({type: 'setUser', payload: {userId: res.userId, firstName: res.firstName}});
+                //props.history.push('/');
+            }).catch(err => console.log(err));
     }
 
     return (
         <div>
+            <p>{user.id} {user.name}</p>
             <form>
                 <label>Username
                     <input value={loginDetails.username} onChange={(e) => updateLoginDetails(e, "username")}></input>

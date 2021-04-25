@@ -15,7 +15,7 @@ const PostEditor = (props) => {
         setContent(e.target.value);
     }
 
-    const getRequestOptions = () => {
+    const getHttpRequest = () => {
         let requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ const PostEditor = (props) => {
     }
 
     const handleSubmitPost = () => {
-        fetch('http://localhost:9000/posts', getRequestOptions())
+        fetch('http://localhost:9000/posts', getHttpRequest())
             .then(res => res.text())
             .then(res => props.history.push('/posts/' + res))
             .catch(err => console.log(err))

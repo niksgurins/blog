@@ -1,9 +1,11 @@
+// Express/Node imports
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const { promisify } = require('util');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 const port = 9000;
 
 // DB imports
@@ -13,10 +15,9 @@ const userDB = require("./db/userDB")(client);
 // OAuth imports
 const authenticator = require("./auth/authenticator")(userDB);
 
-app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(app.oauth.errorHandler());
 
 const test = async () => {
     console.log('Connecting to MongoDB...');
@@ -31,52 +32,24 @@ const test = async () => {
 }
 test();
 
-app.use('/oauth', require('./routes/auth.js'))
+// Cookies Middleware
+app.use(function (req, res, next) {
+    // check if client sent cookie
+    const cookies = req.cookies;
+    console.log(cookies);
+    next();
+});
 
-app.get('/posts', async function (req, res) {
-    // Get all(?) blog posts
-    const results = await getAllPosts();
-    res.send(results);
-})
+app.use('/oauth', cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+}), require('./routes/auth.js'))
 
-app.post('/posts', async function (req, res) {
-    // Add a blog post to the DB
-    let latestPostId = await getLatestPostId();
-    let newPostId = ++latestPostId;
-
-    let newPost = { 
-        postId: newPostId, 
-        title: req.body.title, 
-        content: req.body.content, 
-        authorId: req.body.authorId,
-        createdAt: req.body.createdAt
-    };
-
-    console.log(newPost);
-
-    client.db('blogDB').collection('posts').insertOne(newPost)
-        .then(data => console.log(`Inserted ${data.insertedCount} row(s) into posts collection`))
-        .catch(err => console.log(err));
-    
-    res.send(newPostId.toString());
-})
-
-app.get('/posts/:postId', async function (req, res) {
-    // Get specific blog post by it's title (unique)
-    const postId = req.params.postId;
-
-    if (isNaN(postId)) {
-        res.send('postId must be a positive integer');
-    } else {
-        try {
-            console.log(`Fetching post by postId: ${postId}`);
-            let results = await getPostById(postId);
-            res.send(results);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-})
+app.use('/posts', cors({
+    origin: '*',
+    optionsSuccessStatus: 200
+}), require('./routes/posts.js'))
 
 app.post('/users', async function (req, res) {
     // Register user
@@ -106,34 +79,6 @@ function sendResponse(res, message, error) {
         message: message,
         error: error,
     });
-}
-
-async function getAllPosts() {
-    const results = client.db('blogDB').collection('posts').find().toArray();
-    return results;
-}
-
-async function getPostById(postId) {
-    const query = { postId: parseInt(postId) };
-    let results = '';
-
-    await client.db('blogDB').collection('posts').findOne(query)
-        .then(data => results = data)
-        .catch(err => err);
-
-    return results;
-}
-
-async function getLatestPostId() {
-    let postId = -1;
-    const cursor = client.db('blogDB').collection('posts').find({})
-        .sort({ 'postId':-1 }).limit(1);
-
-    await cursor.forEach(item => {
-        postId = item.postId;
-    });
-
-    return postId;
 }
 
 app.get('/users', function (req, res) {

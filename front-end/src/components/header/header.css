@@ -1,10 +1,12 @@
 /* Fix header to top of page, reset list styling and hide dropdown by default */
 .header {
-    background-color: #fff;
-    box-shadow: 1px 1px 10px 0 rgba(0,0,0,.1);
+    box-shadow: 0.1rem 0.1rem 1rem 0 rgba(0,0,0,.5);
     position: sticky;
     width: 100%;
-    top: 0px;
+    top: 0;
+    font-size: 2em;
+    background-color: #fbfaf8;
+    user-select: none;
 }
 
 .header ul {
@@ -12,52 +14,65 @@
     padding: 0;
     list-style: none;
     overflow: hidden;
-    background-color: #fff;
 }
 
 .header li a {
     display: block;
-    padding: 20px 20px;
-    border-right: 1px solid #f4f4f4;
+    padding: 2rem 2rem;
+    border-right: 0.1rem solid #f4f4f4;
     text-decoration: none;
+    color: #192c68;
+    background-color: #fff;
+    border-bottom: solid #fbfaf8 0.1rem;
+    box-shadow: 0 1rem 1.5rem 0 rgba(0,0,0,.5);
+}
+
+.header li:first-of-type {
+    border-top: solid rgba(0,0,0,.01) 0.1rem;
 }
 
 .header li a:hover {
+    color: #0a122a;
     background-color: #f4f4f4;
+}
+
+.header-content {
+    display: block;
+    width: 75rem;
+    font-size: 2em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .header .logo {
     display: block;
     float: left;
-    font-size: 2em;
-    padding: 10px 30px;
+    padding: 1rem;
+    padding-left: 0;
     text-decoration: none;
     border: none;
-    background-color: #fff;
-    color: darkslategrey;
-    user-select: none;
+    color: #0a122a;
+    background-color: #fbfaf8;
 }
 
 .header .menu {
     clear: both;
     max-height: 0; /* Hide menu initially */
-    transition: max-height .2s ease-out; /* Animate the menu stretching till max-height */
+    transition: max-height .3s ease-out; /* Animate the menu stretching till max-height */
 }
 
 /* Style menu icon and dropdown */
 .header .burger-menu-icon {
     display: inline-block;
     float: right;
-    padding: 28px 30px 0px 0px;
+    padding-top: 2.7rem;
     position: relative;
-    user-select: none;
-    margin-top: -5px;
+    margin-top: -0.5rem;
 }
 
 .burger-icon {
     cursor: pointer;
-    color: darkslategrey;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     display: block;
     position: relative;
 }
@@ -68,5 +83,119 @@
 }
 
 .header .burger-menu-btn:checked ~ .menu {
-    max-height: 260px; /* 65px per item */
+    max-height: 14.3rem; /* 7.15rem per item */
+}
+
+.profile {
+    font-size: 1em;
+    float: right;
+    display: inline-block;
+    position: relative;
+    justify-content: center;
+    height: 100%;
+    border-left: solid darkgray 0.1rem;
+    border-right: solid darkgray 0.1rem;
+    border-bottom: solid darkgray 0.1rem;    
+    margin-right: 3rem;
+    margin-bottom: 0;
+    padding-top: 0.8rem;
+    padding-bottom: 0.7rem;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+.profile-logo {
+    height: 1.4em;
+    width: 1.4em;
+    margin-left: 1.6rem;
+}
+
+.profile-icon {
+    margin-top: auto;
+    margin-right: 1.6rem;
+    margin-left: 0.8rem;
+    margin-bottom: auto;
+}
+
+.profile-dropdown-content {
+    display: block;
+    position: absolute;
+    top: 5.85em;
+    max-height: 0rem;
+    left: -0.1rem;
+    width: 11.8rem;
+    margin-left: 0;
+    font-size: 1.5rem;
+    list-style: none;
+    overflow: hidden;
+    border-left: solid darkgray 0.1rem;
+    border-right: solid darkgray 0.1rem;
+    transition: max-height .2s ease-out;
+    background-color: #FFF;
+}
+
+.profile-dropdown-content li a {
+    line-height: 0rem;
+    padding-bottom: 0.3rem;
+    text-decoration: none;
+    height: 3.9rem;
+    display: block;
+    color: #192c68;
+    border-bottom: solid darkgray 0.1rem;
+}
+
+.profile-dropdown-content a:hover {background-color: #f4f4f4;}
+
+.profile:hover .profile-dropdown-content {max-height: 8rem}
+
+.hide {
+    display: none;
+}
+
+.greeting {
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem;
+    line-height: 0rem;
+    padding-bottom: 0.3rem;
+    padding-top: 0.5rem;
+    margin: 0;
+}
+
+/* Media Queries */
+@media screen and (max-width: 808px) {
+    .header-content {
+        width: 65rem;
+    }
+}
+
+@media screen and (max-width: 708px) {
+    .header {
+        font-size: 1.8em;
+    }
+    
+    .header-content {
+        width: 55rem;
+    }
+
+    /* Aligning the user dropdown menu with it's header section */
+    .profile-dropdown-content {
+        top: 5.45em;
+        width: 11.2rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header-content {
+        width: 45rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .header {
+        font-size: 1.8em;
+    }
+
+    .header-content {
+        width: 30rem;
+    }
 }
