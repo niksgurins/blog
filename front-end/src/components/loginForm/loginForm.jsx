@@ -1,10 +1,9 @@
 import {useState} from 'react'
 import '../../common/form.css'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setUser } from '../../reduxSlices/userSlice'
 
 const Login = (props) => {
-    const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
     const crypto = require('crypto');
@@ -35,26 +34,17 @@ const Login = (props) => {
         return requestOptions;
     }
 
-    const saveBasicUserInfoToLocalStorage = (user) => {
-        Object.keys(user).forEach(key => {
-            localStorage.setItem(key, user[key]);
-        })
-    }
-
     const handleLogin = () => {
         fetch('http://localhost:9000/oauth/authorize', getHttpRequest())
             .then(res => res.json())
             .then(res => {
-                saveBasicUserInfoToLocalStorage(res);
-                props.setSignedIn(true);
-                dispatch({type: 'setUser', payload: {userId: res.userId, firstName: res.firstName}});
-                //props.history.push('/');
+                dispatch(setUser({id: res.userId, name: res.firstName}));
+                props.history.push('/');
             }).catch(err => console.log(err));
     }
 
     return (
         <div>
-            <p>{user.id} {user.name}</p>
             <form>
                 <label>Username
                     <input value={loginDetails.username} onChange={(e) => updateLoginDetails(e, "username")}></input>

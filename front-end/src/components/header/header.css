@@ -19,16 +19,16 @@
 .header li a {
     display: block;
     padding: 2rem 2rem;
-    border-right: 0.1rem solid #f4f4f4;
+    border-right: solid #f4f4f4 1px;
     text-decoration: none;
     color: #192c68;
     background-color: #fff;
-    border-bottom: solid #fbfaf8 0.1rem;
+    border-bottom: solid #fbfaf8 1px;
     box-shadow: 0 1rem 1.5rem 0 rgba(0,0,0,.5);
 }
 
 .header li:first-of-type {
-    border-top: solid rgba(0,0,0,.01) 0.1rem;
+    border-top: solid rgba(0,0,0,.01) 1px;
 }
 
 .header li a:hover {
@@ -93,9 +93,9 @@
     position: relative;
     justify-content: center;
     height: 100%;
-    border-left: solid darkgray 0.1rem;
-    border-right: solid darkgray 0.1rem;
-    border-bottom: solid darkgray 0.1rem;    
+    border-left: solid darkgray 1px;
+    border-right: solid darkgray 1px;
+    border-bottom: solid darkgray 1px;
     margin-right: 3rem;
     margin-bottom: 0;
     padding-top: 0.8rem;
@@ -128,8 +128,8 @@
     font-size: 1.5rem;
     list-style: none;
     overflow: hidden;
-    border-left: solid darkgray 0.1rem;
-    border-right: solid darkgray 0.1rem;
+    border-left: solid darkgray 1px;
+    border-right: solid darkgray 1px;
     transition: max-height .2s ease-out;
     background-color: #FFF;
 }
@@ -141,7 +141,7 @@
     height: 3.9rem;
     display: block;
     color: #192c68;
-    border-bottom: solid darkgray 0.1rem;
+    border-bottom: solid darkgray 1px;
 }
 
 .profile-dropdown-content a:hover {background-color: #f4f4f4;}

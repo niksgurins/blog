@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import './header.css';
 import profile from '../../profile.svg';
@@ -10,8 +11,12 @@ const Header = (props) => {
         document.getElementById("burger-menu-btn").checked = false;
     }
 
+    const showGreeting = () => {
+        return props.user.name !== '' ? `Hello, ${props.user.name}` : '';
+    }
+
     useEffect(() => {
-        console.log(props.signedIn);
+        showGreeting();
     })
 
     return (
@@ -27,7 +32,7 @@ const Header = (props) => {
                 <div className="profile">
                     <img className="profile-logo" src={profile} alt="profile" /> 
                     <CaretDownFill className="profile-icon" size={20} />
-                    <p className="greeting">Hello, {localStorage.getItem('firstName')}</p>
+                    <p className="greeting">{showGreeting()}</p>
                     <div className="profile-dropdown-content">
                         <li className={props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/login">Sign in</NavLink></li>
                         <li className={props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/register">Sign up</NavLink></li>
@@ -45,4 +50,8 @@ const Header = (props) => {
     );
 }
 
-export default Header;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(Header);

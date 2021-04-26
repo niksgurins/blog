@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import MarkdownView from 'react-showdown';
-import { withRouter } from 'react-router-dom'
 import './postEditor.css';
 
 const PostEditor = (props) => {
@@ -60,6 +59,6 @@ const PostEditor = (props) => {
     );
 }
 
-withRouter(PostEditor);
+//withRouter(PostEditor);
 
 export default PostEditor;

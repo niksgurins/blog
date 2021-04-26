@@ -5,7 +5,6 @@ import {
     Route,
     BrowserRouter
 } from "react-router-dom";
-import {useState, useEffect} from 'react';
 import Home from "./components/home/home";
 import About from "./components/about/about";
 import Contact from "./components/contact/contact";
@@ -15,26 +14,18 @@ import RegistrationForm from "./components/registrationForm/registrationForm";
 import LoginForm from "./components/loginForm/loginForm";
 
 const App = () => {
-    const [signedIn, setSignedIn] = useState(false);
-
-    useEffect(() => {
-        console.log(document.cookie);
-        if (signedIn)
-            console.log("signedIn");
-    });
-    
     return (
         <BrowserRouter>
             <div className="app">
-                <Header signedIn={signedIn} />
+                <Header />
                 <div className="content" id="content">
-                    <Route exact path="/" component={ Home } signedIn={signedIn}/>
+                    <Route exact path="/" component={ Home }/>
                     <Route path="/about" component={ About }/>
                     <Route path="/contact" component={ Contact }/>
                     <Route path="/new" component={ PostEditor }/>
                     <Route path="/posts/:postId" component={ BlogPost }/>
                     <Route path="/register" component={ RegistrationForm }/>
-                    <Route path="/login" render={(props) => (<LoginForm setSignedIn={setSignedIn} {...props} />)} />
+                    <Route path="/login" component={ LoginForm } />
                 </div>
             </div>
         </BrowserRouter>
