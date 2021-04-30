@@ -34,11 +34,11 @@ const Header = (props) => {
                     <CaretDownFill className="profile-icon" size={20} />
                     <p className="greeting">{showGreeting()}</p>
                     <div className="profile-dropdown-content">
-                        <li className={props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/login">Sign in</NavLink></li>
-                        <li className={props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/register">Sign up</NavLink></li>
-                        <li className={!props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/profile">Profile</NavLink></li>
-                        <li className={!props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/posts/user/:userId">Your Posts</NavLink></li>
-                        <li className={!props.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/new">New Post</NavLink></li>
+                        <li className={props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/login">Sign in</NavLink></li>
+                        <li className={props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/register">Sign up</NavLink></li>
+                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/profile">Profile</NavLink></li>
+                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/posts/user/:userId">Your Posts</NavLink></li>
+                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/new">New Post</NavLink></li>
                     </div>
                 </div>
             </div>

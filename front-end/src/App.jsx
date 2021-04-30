@@ -12,8 +12,21 @@ import PostEditor from "./components/postEditor/postEditor";
 import BlogPost from "./components/blogPost/blogPost";
 import RegistrationForm from "./components/registrationForm/registrationForm";
 import LoginForm from "./components/loginForm/loginForm";
+import { useEffect } from 'react';
+import { useDispatch, connect } from 'react-redux'
+import { setUser } from './reduxSlices/userSlice'
 
-const App = () => {
+const App = (props) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(props.user.id === '')
+            fetch('http://localhost:9000/signedIn', { credentials: 'include' })
+                .then(res => res.json())
+                .then(res => { if(res.signedIn) dispatch(setUser({id: res.userId, name: res.firstName}))})
+                .catch(err => console.log(err));
+    });
+
     return (
         <BrowserRouter>
             <div className="app">
@@ -32,4 +45,8 @@ const App = () => {
     );
 }
 
-export default App;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(App);

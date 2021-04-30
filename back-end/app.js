@@ -2,22 +2,24 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const app = express();
 const { promisify } = require('util');
 const crypto = require('crypto');
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
+
+const app = express();
 const port = 9000;
-
-// DB imports
-const client = require('./db/mongoUtil');
-const userDB = require("./db/userDB")(client);
-
-// OAuth imports
-const authenticator = require("./auth/authenticator")(userDB);
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// DB imports
+const client = require('./db/mongoUtil');
+const { token } = require('./auth/server');
+const userDB = require("./db/userDB")(client);
+
+// OAuth imports
+const authenticator = require("./auth/authenticator")(userDB);
 
 const test = async () => {
     console.log('Connecting to MongoDB...');
@@ -32,16 +34,8 @@ const test = async () => {
 }
 test();
 
-// Cookies Middleware
-app.use(function (req, res, next) {
-    // check if client sent cookie
-    const cookies = req.cookies;
-    console.log(cookies);
-    next();
-});
-
 app.use('/oauth', cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
     credentials: true,
     optionsSuccessStatus: 200
 }), require('./routes/auth.js'))
@@ -51,34 +45,40 @@ app.use('/posts', cors({
     optionsSuccessStatus: 200
 }), require('./routes/posts.js'))
 
-app.post('/users', async function (req, res) {
-    // Register user
-    authenticator.registerUser(req, res);
+app.get('/signedIn', cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    credentials: true,
+    optionsSuccessStatus: 200
+}), async (req, res) => {
+    if (!req.cookies.access_token) 
+        res.status(401).json({signedIn: false});
+    else {
+        let token = await getTokenObject(req.cookies.access_token);
+        if (token === undefined)
+            res.status(401).json({signedIn: false});
+        else {
+            let user = await getUserById(token.userId);
+            res.status(200).json({signedIn: true, userId: token.userId, firstName: user.firstName});
+        }
+    }
 })
 
-app.post('/session', async function (req, res) {
-    // Login user
-    app.oauth.grant();
-    authenticator.login(req, res);
-})
+const getTokenObject = async token => {
+    let obj;
+    await client.db('blogDB').collection('oauth_tokens').findOne({ accessToken: token })
+        .then(res => obj = res)
+        .catch(err => { console.log(err); res.status(404).json({ error: 'Token not found' }); });
 
-async function getLatestAuthorId() {
-    let authorId = -1;
-    const cursor = client.db('blogDB').collection('users').find({})
-        .sort({ 'authorId':-1 }).limit(1);
-
-    await cursor.forEach(item => {
-        authorId = item.authorId;
-    });
-
-    return authorId;
+    return obj;
 }
 
-function sendResponse(res, message, error) {
-    res.status(error !== undefined ? 400 : 200).json({
-        message: message,
-        error: error,
-    });
+const getUserById = async userId => {
+    let user;
+    await client.db('blogDB').collection('users').findOne({ _id: userId })
+        .then(res => user = res)
+        .catch(err => { console.log(err); res.status(404).json({ error: 'User not found' }); });
+
+    return user;
 }
 
 app.get('/users', function (req, res) {

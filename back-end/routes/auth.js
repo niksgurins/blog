@@ -74,34 +74,34 @@ router.get('/exchange', async (req, res) => {
             })
             .then(token => token.json())
             .then(token => {
-                console.log(token);
                 let response = {
                     userId: user._id,
                     firstName: user.firstName, 
+                    lastName: user.lastName,
                     expires_in: token.expires_in
                     // refresh_token: token.refresh_token,
                     // scope: token.scope
                 }
 
                 let optionsHttpOnly = {
-                    maxAge: token.expires_in,
+                    maxAge: token.expires_in * 1000,
                     httpOnly: true, 
+                    path: '/'
                 }
 
-                // Set cookie
+                //Set headers
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader('Cache-Control', 'no-store');
+                res.setHeader('Pragma', 'no-cache');
+                res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+                // Set cookies
                 res.cookie('access_token', token.access_token, optionsHttpOnly)
-                res.cookie('token_type', token.token_type, {maxAge: token.expires_in})
-                res.cookie('user_id', token.userId, {maxAge: token.expires_in})
-
-                res.set({
-                    //'Access-Control-Allow-Origin': 'http://localhost:3000',
-                    //'Access-Control-Allow-Credentials': 'true',
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-store',
-                    'Pragma': 'no-cache',
-                })
-
+                res.cookie('token_type', token.token_type, optionsHttpOnly)
+                
+                // Send response
                 res.status(200).json(response);
+
             })
             .catch(err => console.log(err));
         } else {
