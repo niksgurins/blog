@@ -10,7 +10,7 @@ const BlogPost = (props) => {
     })
 
     const fetchBlog = () => {
-        const url = "http://localhost:9000/posts/" + postId;
+        const url = `http://localhost:9000/posts/${postId}`;
         fetch(url)
             .then(res => res.json())
             .then(res => setBlogPostDetails({ 

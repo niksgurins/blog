@@ -1,18 +1,29 @@
 import React, { useEffect } from 'react';
 import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { clearUser } from '../../reduxSlices/userSlice'
 
 import './header.css';
 import profile from '../../profile.svg';
 import { List, CaretDownFill } from 'react-bootstrap-icons';
 
 const Header = (props) => {
+    const dispatch = useDispatch();
+
     const closeMenu = () => {
         document.getElementById("burger-menu-btn").checked = false;
     }
 
     const showGreeting = () => {
-        return props.user.name !== '' ? `Hello, ${props.user.name}` : '';
+        return props.user.firstName !== '' ? `Hello, ${props.user.firstName}` : '';
+    }
+    
+    const signOut = () => {
+        dispatch(clearUser())
+        closeMenu();
+        fetch('http://localhost:9000/signOut', {credentials: 'include'}) // Expire the existing httpOnly cookies
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
     }
 
     useEffect(() => {
@@ -33,12 +44,13 @@ const Header = (props) => {
                     <img className="profile-logo" src={profile} alt="profile" /> 
                     <CaretDownFill className="profile-icon" size={20} />
                     <p className="greeting">{showGreeting()}</p>
-                    <div className="profile-dropdown-content">
+                    <div className={props.user.signedIn ? 'profile-dropdown-content signed-in-menu' : 'profile-dropdown-content'}>
                         <li className={props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/login">Sign in</NavLink></li>
                         <li className={props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/register">Sign up</NavLink></li>
                         <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/profile">Profile</NavLink></li>
-                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/posts/user/:userId">Your Posts</NavLink></li>
+                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to={`/users/${props.user.id}/posts`}>Your Posts</NavLink></li>
                         <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => closeMenu()}><NavLink to="/new">New Post</NavLink></li>
+                        <li className={!props.user.signedIn ? 'hide' : ''} onClick={() => signOut()}><NavLink to="/">Sign out</NavLink></li>
                     </div>
                 </div>
             </div>

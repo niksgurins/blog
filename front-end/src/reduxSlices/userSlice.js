@@ -4,7 +4,9 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: {
         id: '',
-        name: '',
+        firstName: '',
+        lastName: '',
+        intro: '',
         signedIn: false
     },
     reducers: {
@@ -14,12 +16,16 @@ export const userSlice = createSlice({
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
             state.id = action.payload.id;
-            state.name = action.payload.name;
+            state.firstName = action.payload.firstName;
+            state.lastName = action.payload.lastName;
+            state.intro = action.payload.intro;
             state.signedIn = true;
         },
         clearUser: (state) => {
             state.id = '';
-            state.name = '';
+            state.firstName = '';
+            state.lastName = '';
+            state.intro = '';
             state.signedIn = false;
         }
     },

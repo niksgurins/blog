@@ -37,7 +37,7 @@ const Login = (props) => {
     const handleLogin = () => {
         fetch('http://localhost:9000/oauth/authorize', getHttpRequest())
             .then(res => {
-                dispatch(setUser({id: res.userId, name: res.firstName}));
+                dispatch(setUser({id: res.userId, firstName: res.firstName, lastName: res.lastName, intro: res.intro}));
                 props.history.push('/');
             }).catch(err => console.log(err));
     }

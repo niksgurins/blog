@@ -147,6 +147,9 @@
 .profile-dropdown-content a:hover {background-color: #f4f4f4;}
 
 .profile:hover .profile-dropdown-content {max-height: 8rem}
+.profile:hover .signed-in-menu {
+    max-height: 15.6rem; /* 3 times .profile-dropdown-content li a height */
+}
 
 .hide {
     display: none;

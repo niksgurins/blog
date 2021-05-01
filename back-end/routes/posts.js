@@ -1,45 +1,17 @@
 const express = require('express')
 const client = require('../db/mongoUtil')
+const postsDB = require("../db/postsDB")(client);
 const router = express.Router()
-const { ObjectID } = require('bson');
-
-async function getAllPosts() {
-    const results = client.db('blogDB').collection('posts').find().toArray();
-    return results;
-}
-
-async function getPostById(postId) {
-    const query = { postId: parseInt(postId) };
-    let results = '';
-
-    await client.db('blogDB').collection('posts').findOne(query)
-        .then(data => results = data)
-        .catch(err => err);
-
-    return results;
-}
-
-async function getLatestPostId() {
-    let postId = -1;
-    const cursor = client.db('blogDB').collection('posts').find({})
-        .sort({ 'postId':-1 }).limit(1);
-
-    await cursor.forEach(item => {
-        postId = item.postId;
-    });
-
-    return postId;
-}
 
 router.get('/', async function (req, res) {
     // Get all(?) blog posts
-    const results = await getAllPosts();
+    const results = await postsDB.getAllPosts();
     res.send(results);
 })
 
 router.post('/', async function (req, res) {
     // Add a blog post to the DB
-    let latestPostId = await getLatestPostId();
+    let latestPostId = await postsDB.getLatestPostId();
     let newPostId = ++latestPostId;
 
     let newPost = { 
@@ -68,7 +40,7 @@ router.get('/:postId', async function (req, res) {
     } else {
         try {
             console.log(`Fetching post by postId: ${postId}`);
-            let results = await getPostById(postId);
+            let results = await postsDB.getPostById(postId);
             res.send(results);
         } catch (error) {
             console.log(error);

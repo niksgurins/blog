@@ -3,6 +3,7 @@ import BLANKUSER from '../../constants/blankUser';
 import '../../common/form.css';
 
 const RegistrationForm = () => {
+    const crypto = require("crypto");
     const [userDetails, setUserDetails] = useState({...BLANKUSER});
     const [passwordCheck, setPasswordCheck] = useState("");
     const [registerStatus, setRegisterStatus] = useState("");
@@ -27,7 +28,8 @@ const RegistrationForm = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                ...userDetails
+                ...userDetails,
+                password: crypto.createHash("sha256").update(userDetails.password).digest("hex")
             })
         };
 

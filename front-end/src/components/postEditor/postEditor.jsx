@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import MarkdownView from 'react-showdown';
 import './postEditor.css';
 
@@ -21,7 +22,7 @@ const PostEditor = (props) => {
             body: JSON.stringify({
                 title: title,
                 content: content,
-                authorId: 0,
+                authorId: props.user.id,
                 createdAt: new Date().getTime() / 1000
             })
         };
@@ -35,6 +36,11 @@ const PostEditor = (props) => {
             .then(res => props.history.push('/posts/' + res))
             .catch(err => console.log(err))
     }
+
+    useEffect(() => { // If user is not logged in send them to login page
+        if(props.user.id === '')
+            props.history.push('/login');
+    })
 
     return (
         <div className="blog-writer">
@@ -59,6 +65,8 @@ const PostEditor = (props) => {
     );
 }
 
-//withRouter(PostEditor);
+const mapStateToProps = state => ({
+    user: state.user
+});
 
-export default PostEditor;
+export default connect(mapStateToProps)(PostEditor);

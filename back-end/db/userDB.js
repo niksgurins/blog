@@ -1,47 +1,48 @@
+const { ObjectID } = require('bson');
 let client;
 
-module.exports = (injectedMongoClient) => {
-    client = injectedMongoClient;
+module.exports = (mongoClient) => {
+    client = mongoClient;
 
     return {
         register: register,
         getUser: getUser,
         isValidUser: isValidUser,
+        getUserById: getUserById
     };
 };
 
-var crypto = require("crypto");
-
-async function register(user) {
+const register = async user => {
     // Register
     let newUser = {
         username: user.username, 
-        password: crypto.createHash("sha256").update(user.password).digest("hex"),
+        password: user.password,
         firstName: user.firstName, 
         lastName: user.lastName,
         intro: user.intro
         // createdAt: user.createdAt,
-        // status: 'Active'
     };
 
-    let dbResponse;
+    let response;
     await client.db('blogDB').collection('users').insertOne(newUser)
-        .then(data => dbResponse = data.insertedCount) // 0 if not inserted, 1 if it did
-        .catch(err => dbResponse = err);
+        .then(data => response = data.insertedCount) // 0 if not inserted, 1 if it did
+        .catch(err => response = err);
 
-    return dbResponse;
+    return response;
 }
 
-async function getUser(username, password) {
-    const shaPass = crypto.createHash("sha256").update(password).digest("hex");
-    const query = { username: username, password: shaPass };
+const getUser = async (username, password) => {
+    const query = { username: username, password: password };
 
+    let user;
     await client.db('blogDB').collection('users').findOne(query)
-        .then(data => data === null ? err = 'Incorrect login details' : err = null)
+        .then(data => data === null ? user = 'Incorrect login details' : user = data)
         .catch(err => res.send(err));
+
+    return user;
 }
 
-async function isValidUser (username) {
+const isValidUser = async username => {
     const query = { username: username };
     let error = '';
 
@@ -50,4 +51,13 @@ async function isValidUser (username) {
         .catch(err => error = err);
 
     return error;
+}
+
+const getUserById = async userId => {
+    let user;
+    await client.db('blogDB').collection('users').findOne({ _id: ObjectID(userId) })
+        .then(res => user = res)
+        .catch(err => { console.log(err); res.status(404).json({ error: 'User not found' }); });
+
+    return user;
 }

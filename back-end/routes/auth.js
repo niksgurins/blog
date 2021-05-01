@@ -78,6 +78,7 @@ router.get('/exchange', async (req, res) => {
                     userId: user._id,
                     firstName: user.firstName, 
                     lastName: user.lastName,
+                    intro: user.intro,
                     expires_in: token.expires_in
                     // refresh_token: token.refresh_token,
                     // scope: token.scope
