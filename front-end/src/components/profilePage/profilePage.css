@@ -1,0 +1,157 @@
+.profile-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    grid-gap: 2rem;
+    justify-content: left;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-details img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+}
+
+.profile-details p {
+    text-align: center;
+}
+
+.profile-details hr {
+    color: #dcdcdc;
+    margin: 0;
+    padding: 0;
+    width: 90%;
+}
+
+.profile-posts-blank {
+    justify-content: center;
+}
+
+.profile-posts-blank h1 {
+    margin-bottom: 6rem;
+}
+
+.profile-posts-btn {
+    color:rgb(10, 18, 42);
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    padding: 1rem 1.5rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    border: solid #e1e1df 1px;
+    transition: background-color .3s ease-in-out, color .6s ease-in-out;
+}
+
+.profile-posts-btn:hover {
+    text-decoration: none;
+    color: white;
+    background-color: rgb(10, 18, 42);;
+}
+
+.profile-posts .profile-posts-btn {
+    justify-self: right;
+}
+
+.profile-posts, .profile-posts-blank {
+    grid-column: 2 /span 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-posts a {
+    margin-top: 2rem;
+}
+
+.profile-details p, .profile-details input, .profile-details textarea, .profile-details label {
+    width: 100%;
+}
+
+.profile-details label {
+    text-align: left;
+    font-size: 1.8rem;
+}
+
+.profile-details input, .profile-details textarea {
+    padding: 0;
+    border: solid #e1e1df 1px;
+    background-color: #fff;
+    padding-left: 0.7rem;
+    font-size: 1.6rem;
+}
+
+.profile-details label input:focus, .profile-details textarea:focus {
+    outline: none;
+    border: solid rgb(10, 18, 42) 1px;
+}
+
+.profile-details textarea {
+    resize: none;
+    height: 180px;
+}
+
+.profile-details button {
+    font-size: 1.7rem;
+    border: solid #dcdcdc 1px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    transition: background-color .2s ease-out;
+}
+
+.profile-details button:hover {
+    color: #0a122a;
+    background-color: #dcdcdc;
+}
+
+.profile-details span {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    position: absolute;
+    height: 3rem;
+    left: 0;
+    top: 70%;
+    padding: 0.5rem;
+    border: solid #dcdcdc 1px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+}
+
+.profile-details span:hover {
+    color: #0a122a;
+    background-color: #dcdcdc;
+}
+
+.profile-details span svg {
+    margin-right: 0.5rem;
+}
+
+.profile-details .error {
+    border-radius: 5px;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+}
+
+.all-posts-btn {
+    text-align: right;
+    align-self: right;
+}
+
+.save-btn {
+    color: white;
+    border: solid rgb(46,160,67) 1px !important;
+    background-color: rgb(46,160,67) !important;
+}
+
+.save-btn:hover {
+    color: white !important;
+    border: solid rgb(35,134,54) 1px !important;
+    background-color: rgb(35,134,54) !important;
+}

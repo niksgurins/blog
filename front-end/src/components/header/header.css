@@ -25,6 +25,7 @@
     background-color: #fff;
     border-bottom: solid #fbfaf8 1px;
     box-shadow: 0 1rem 1.5rem 0 rgba(0,0,0,.5);
+    transition: background-color .1s ease-out;
 }
 
 .header li:first-of-type {
@@ -38,7 +39,7 @@
 
 .header-content {
     display: block;
-    width: 75rem;
+    width: 90rem;
     font-size: 2em;
     margin-left: auto;
     margin-right: auto;
@@ -98,7 +99,7 @@
     border-bottom: solid darkgray 1px;
     margin-right: 3rem;
     margin-bottom: 0;
-    padding-top: 0.8rem;
+    padding-top: 0.6rem;
     padding-bottom: 0.7rem;
     background-color: #FFF;
     cursor: pointer;
@@ -108,6 +109,8 @@
     height: 1.4em;
     width: 1.4em;
     margin-left: 1.6rem;
+    margin-bottom: 0.4rem;
+    border-radius: 0.7em;
 }
 
 .profile-icon {
@@ -165,40 +168,24 @@
 }
 
 /* Media Queries */
-@media screen and (max-width: 808px) {
+@media screen and (max-width: 1007px) {
     .header-content {
         width: 65rem;
     }
 }
 
-@media screen and (max-width: 708px) {
+@media screen and (max-width: 640px) {
     .header {
         font-size: 1.8em;
     }
     
     .header-content {
-        width: 55rem;
+        width: 45rem;
     }
 
     /* Aligning the user dropdown menu with it's header section */
     .profile-dropdown-content {
         top: 5.45em;
         width: 11.2rem;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .header-content {
-        width: 45rem;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .header {
-        font-size: 1.8em;
-    }
-
-    .header-content {
-        width: 30rem;
     }
 }

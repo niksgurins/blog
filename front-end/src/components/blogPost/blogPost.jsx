@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MarkdownView from 'react-showdown';
-import BLANKPOST from '../../constants/blankPost'
+import BLANKPOST from '../../dataTemplates/blankPost'
 import './blogPost.css';
 
 const BlogPost = (props) => {

@@ -3,7 +3,8 @@ const client = require('../db/mongoUtil')
 const oauthServer = require('../auth/server.js')
 const router = express.Router()
 const fetch = require("node-fetch");
-const { ObjectID } = require('bson');
+// const { ObjectID } = require('bson');
+const userDB = require("../db/userDB")(client);
 
 router.get('/', (req,res) => {  // This is only hit if the user/password cannot be matched to a document in the DB
     res.status(401).json({'message': 'Incorrect login credentials'});
@@ -60,10 +61,7 @@ router.get('/exchange', async (req, res) => {
         
         if (codeInDB !== undefined && codeInDB !== null) {
             let clientSecret = null;
-            let user;
-            await client.db('blogDB').collection('users').findOne({_id: ObjectID(codeInDB.user_id)})
-                .then(data => user = data)
-                .catch(err => user = err)
+            let user = await userDB.getUserById(codeInDB.user_id);
 
             fetch('http://localhost:9000/oauth/token', {
                 method: 'POST',
@@ -74,16 +72,6 @@ router.get('/exchange', async (req, res) => {
             })
             .then(token => token.json())
             .then(token => {
-                let response = {
-                    userId: user._id,
-                    firstName: user.firstName, 
-                    lastName: user.lastName,
-                    intro: user.intro,
-                    expires_in: token.expires_in
-                    // refresh_token: token.refresh_token,
-                    // scope: token.scope
-                }
-
                 let optionsHttpOnly = {
                     maxAge: token.expires_in * 1000,
                     httpOnly: true, 
@@ -101,7 +89,15 @@ router.get('/exchange', async (req, res) => {
                 res.cookie('token_type', token.token_type, optionsHttpOnly)
                 
                 // Send response
-                res.status(200).json(response);
+                res.status(200).json({ 
+                    signedIn: true, 
+                    userId: token.userId, 
+                    firstName: user.firstName, 
+                    lastName: user.lastName, 
+                    intro: user.intro, 
+                    img: user.img, 
+                    expires_in: token.expires_in 
+                });
 
             })
             .catch(err => console.log(err));

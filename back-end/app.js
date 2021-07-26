@@ -1,7 +1,6 @@
 // Express/Node imports
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const { promisify } = require('util');
 const cookieParser = require("cookie-parser");
 
@@ -9,8 +8,8 @@ const app = express();
 const port = 9000;
 
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 
 // DB imports
 const client = require('./db/mongoUtil');
@@ -58,7 +57,7 @@ app.get('/signedIn', cors({
             res.status(401).json({signedIn: false});
         else {
             let user = await userDB.getUserById(token.userId);
-            res.status(200).json({signedIn: true, userId: token.userId, firstName: user.firstName, lastName: user.lastName, intro: user.intro});
+            res.status(200).json({ signedIn: true, userId: token.userId, firstName: user.firstName, lastName: user.lastName, intro: user.intro, img: user.img });
         }
     }
 }) 

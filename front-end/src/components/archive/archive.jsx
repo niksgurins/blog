@@ -1,10 +1,10 @@
 import PostAbstract from '../postAbstract/postAbstract';
 import './archive.css'
 
-const Archive = (props) => {
+const Archive = ({ posts, archiveStyle }) => {
     const renderArchive = () => {
-        return props.posts.map(post => {
-            if (props.posts.indexOf(post) === 0 || props.posts.indexOf(post) === 7)
+        return posts.map(post => {
+            if (posts.indexOf(post) === 0 || posts.indexOf(post) === 7)
                 return <PostAbstract key={post._id} post={post} size="large" />
             else
                 return <PostAbstract key={post._id} post={post} size="small" />
@@ -12,7 +12,7 @@ const Archive = (props) => {
     }
 
     return (
-        <div className="archive">
+        <div className={archiveStyle}>
             {renderArchive()}
         </div>
     )

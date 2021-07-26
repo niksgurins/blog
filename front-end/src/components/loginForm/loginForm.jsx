@@ -1,10 +1,13 @@
-import {useState} from 'react'
-import '../../common/form.css'
-import { useDispatch } from 'react-redux'
-import { setUser } from '../../reduxSlices/userSlice'
+import { useState, useRef } from 'react';
+import '../../common/form.css';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../reduxSlices/userSlice';
+import { X } from 'react-bootstrap-icons';
 
 const Login = (props) => {
     const dispatch = useDispatch()
+    const error = useRef();
+    const errorBtn = useRef();
 
     const crypto = require('crypto');
     const [loginDetails, setLoginDetails] = useState({
@@ -33,18 +36,42 @@ const Login = (props) => {
         
         return requestOptions;
     }
+    
+    const handleLoginSuccess = (res) => {
+        if (res.message === "Incorrect login credentials") {
+            error.current.style.display = 'flex';
+            errorBtn.current.style.display = 'block';
+        }
+        else {
+            dispatch(setUser({ id: res.userId, firstName: res.firstName, lastName: res.lastName, intro: res.intro, img: res.img }));
+            props.history.push('/');
+        }
+    }
+
+    const hideErrorSection = () => {
+        error.current.style.display = 'none';
+        errorBtn.current.style.display = 'none';
+    }
 
     const handleLogin = () => {
-        fetch('http://localhost:9000/oauth/authorize', getHttpRequest())
-            .then(res => {
-                dispatch(setUser({id: res.userId, firstName: res.firstName, lastName: res.lastName, intro: res.intro}));
-                props.history.push('/');
-            }).catch(err => console.log(err));
+        if (loginDetails.username !== "" && loginDetails.password !== "") {
+            fetch('http://localhost:9000/oauth/authorize', getHttpRequest())
+                .then(res => res.json())
+                .then(res => handleLoginSuccess(res))
+                .catch(err => console.log(err));
+        } else {
+            error.current.style.display = 'flex';
+            errorBtn.current.style.display = 'block';
+        }
     }
 
     return (
         <div>
             <form>
+                <div className="error" ref={error}>
+                    Incorrect username or password.
+                    <X size={20} ref={errorBtn} onClick={() => hideErrorSection()} />
+                </div>
                 <label>Username
                     <input value={loginDetails.username} onChange={(e) => updateLoginDetails(e, "username")}></input>
                 </label>

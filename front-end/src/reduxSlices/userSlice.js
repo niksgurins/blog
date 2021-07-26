@@ -7,6 +7,7 @@ export const userSlice = createSlice({
         firstName: '',
         lastName: '',
         intro: '',
+        img: '',
         signedIn: false
     },
     reducers: {
@@ -19,6 +20,7 @@ export const userSlice = createSlice({
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
             state.intro = action.payload.intro;
+            state.img = action.payload.img;
             state.signedIn = true;
         },
         clearUser: (state) => {
@@ -26,12 +28,16 @@ export const userSlice = createSlice({
             state.firstName = '';
             state.lastName = '';
             state.intro = '';
+            state.img = '';
             state.signedIn = false;
+        },
+        setUserImage: (state, action) => {
+            state.img = action.payload.img;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, clearUser } = userSlice.actions
+export const { setUser, clearUser, setUserImage } = userSlice.actions
 
 export default userSlice.reducer

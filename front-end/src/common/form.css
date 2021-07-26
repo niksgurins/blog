@@ -4,7 +4,6 @@ form {
     margin-left: auto;
     margin-right: auto;
     color: #646463;
-    padding-top: 1rem;
     background-color: #fbfaf8;
 }
 
@@ -14,7 +13,10 @@ form label {
     columns: 100%;
     text-align: left;
     font-size: 1.8rem;
-    
+}
+
+form label:first-of-type {
+    padding-top: 2rem;
 }
 
 form label input {
@@ -46,4 +48,30 @@ form button:hover {
 form button:focus {
     outline: none;
     background-color: #f4f4f4;
+}
+
+.error {
+    width: 100%;
+    font-size: 1.6rem;
+    color: rgb(255, 99, 87);
+    background-color: rgba(250, 128, 114, .4);
+    margin: 0;
+    padding: 1.5rem 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    display: none;
+    border: 1px solid #ff6357;
+}
+
+.error svg {
+    height: auto;
+    padding: 0;
+    margin: 0;
+    margin-top: 2px;
+    color: #ff6357;
+    background-color: rgba(250, 128, 114, .0);
+    border: none;
+    display: none;
+    cursor: pointer;
 }

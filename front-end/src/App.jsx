@@ -14,6 +14,8 @@ import BlogPost from "./components/blogPost/blogPost";
 import RegistrationForm from "./components/registrationForm/registrationForm";
 import LoginForm from "./components/loginForm/loginForm";
 import PostsByUser from "./components/postsByUser/postsByUser";
+import Footer from "./components/footer/footer";
+import ProfilePage from "./components/profilePage/profilePage";
 
 // File imports 
 import './app.css';
@@ -25,7 +27,7 @@ const App = (props) => {
         if(props.user.id === '')
             fetch('http://localhost:9000/signedIn', { credentials: 'include' })
                 .then(res => res.json())
-                .then(res => { if(res.signedIn) dispatch(setUser({id: res.userId, firstName: res.firstName, lastName: res.lastName, intro: res.intro}))})
+                .then(res => { if(res.signedIn) dispatch(setUser({ id: res.userId, firstName: res.firstName, lastName: res.lastName, intro: res.intro, img: res.img }))})
                 .catch(err => console.log(err));
     });
 
@@ -42,7 +44,9 @@ const App = (props) => {
                     <Route path="/register" component={ RegistrationForm }/>
                     <Route path="/login" component={ LoginForm } />
                     <Route path="/users/:userId/posts" component={ PostsByUser }/>
+                    <Route path="/profile" component={ ProfilePage }/>
                 </div>
+                <Footer />
             </div>
         </BrowserRouter>
     );

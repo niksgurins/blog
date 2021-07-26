@@ -42,9 +42,9 @@ const getLatestPostId = async () => {
     return postId;
 }
 
-const getsPostsByUserId = async userId => {
+const getsPostsByUserId = async (userId, limit) => {
     const posts = await client.db('blogDB').collection('posts').find({ authorId: userId })
-        .sort({ 'postId':-1 }).toArray();
+        .sort({ 'postId':-1 }).limit(limit).toArray();
     const postsWithUserData = await addRelevantUserInfoToPosts(posts);
         
     return postsWithUserData;

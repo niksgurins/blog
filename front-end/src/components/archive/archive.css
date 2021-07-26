@@ -1,4 +1,4 @@
-.archive {
+.home-archive {
     display: grid;
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 18rem;
@@ -6,4 +6,20 @@
     margin-left: auto;
     margin-right: auto;
     text-align: left;
+}
+
+.profile-archive {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 18rem;
+    grid-gap: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+@media screen and (max-width: 640px) {
+    .home-archive {
+        grid-template-columns: 1fr;
+    }
 }

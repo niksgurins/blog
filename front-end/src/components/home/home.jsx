@@ -16,7 +16,7 @@ const Home = () => {
 
     return (
         <div>
-            <Archive posts={posts}/>
+            <Archive posts={posts} archiveStyle="home-archive" />
         </div>
     );
 }

@@ -1,5 +1,9 @@
 .app {
     text-align: center;
+    height: 100vh;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .content {
@@ -7,10 +11,10 @@
     align-items: center;
     justify-content: center;
     font-size: 2.1rem;
-    width: 75rem;
+    width: 90rem;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 6rem;
+    padding: 6rem 0;
     line-height: 3.4rem;
 }
 
@@ -19,28 +23,15 @@
 }
 
 /* Media queries */
-@media screen and (max-width: 808px) {
+@media screen and (max-width: 1007px) {
     .content {
         width: 65rem;
         font-size: 1.8em;
     }
 }
 
-@media screen and (max-width: 708px) {
-    .content {
-        width: 55rem;
-        font-size: 1.8em;
-    }
-}
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     .content {
         width: 45rem;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .content {
-        width: 30rem;
     }
 }

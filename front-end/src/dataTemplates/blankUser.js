@@ -3,7 +3,8 @@ const BLANKUSER = {
     password: "",
     firstName: "",
     lastName: "",
-    intro: ""
+    intro: "",
+    img: ""
 }
 
 export default BLANKUSER;
